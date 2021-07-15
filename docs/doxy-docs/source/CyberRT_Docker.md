@@ -43,18 +43,18 @@ bash docker/scripts/cyber_into.sh
 the Docker environment will stay there until the next time you start another
 Cyber container.
 
-To build Cyber RT only and run unit tests:
+To build Cyber RT and run unit tests:
 
 ```bash
-./apollo.sh build cyber
-./apollo.sh test cyber
+bazel build //...
+bazel test //...
 ```
 
 Or run with `--config=opt` for an optimized build/test.
 
 ```bash
-./apollo.sh build --config=opt cyber
-./apollo.sh test --config=opt cyber
+bazel build --config=opt //...
+bazel test --config=opt //...
 ```
 
 You should be able to see that all the testcases passed.

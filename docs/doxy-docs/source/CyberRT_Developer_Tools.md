@@ -8,7 +8,7 @@ Apollo Cyber RT framework comes with a collection of useful tools for daily deve
 All the tools from Apollo Cyber RT rely on Apollo Cyber RT library, so you must source the setup.bash file for environment setup before using any Apollo Cyber RT tools, shown as below:
 
 ```bash
-username@computername:~$: source /your-path-to-apollo-install-dir/cyber/setup.bash
+username@computername:~$: source /your-path-to-cyber-install-dir/setup.bash
 ```
 
 ## Cyber_visualizer
@@ -18,7 +18,7 @@ username@computername:~$: source /your-path-to-apollo-install-dir/cyber/setup.ba
 `cyber_visualizer` is a visualization tool for displaying the channel data in Apollo Cyber RT.
 
 ```bash
-username@computername:~$: source /your-path-to-apollo-install-dir/cyber/setup.bash
+username@computername:~$: source /your-path-to-cyber-install-dir/setup.bash
 username@computername:~$: cyber_visualizer
 ```
 
@@ -59,7 +59,7 @@ As shown in figure below, three cameras' channel data on the button sections and
 The command line tool `cyber_monitor` provides a clear view of the list of real time channel information Apollo Cyber RT in the terminal.
 
 ```bash
-username@computername:~$: source /your-path-to-apollo-install-dir/cyber/setup.bash
+username@computername:~$: source /your-path-to-cyber-install-dir/setup.bash
 username@computername:~$: cyber_monitor
 ```
 
@@ -141,7 +141,7 @@ m | M ---- Repeat one data on the domain
 Launch cyber_recorder:
 
 ```bash
-$ source /your-path-to-apollo-install-dir/cyber/setup.bash
+$ source /your-path-to-cyber-install-dir/setup.bash
 $ cyber_recorder
 usage: cyber_recorder <command>> [<args>]
 The cyber_recorder commands are:
@@ -310,7 +310,7 @@ play finished. file: 20180720202307.record
 Launch rosbag_to\_record:
 
 ```bash
-$ source /your-path-to-apollo-install-dir/cyber/setup.bash
+$ source /your-path-to-cyber-install-dir/setup.bash
 $ rosbag_to_record
 Usage:
   rosbag_to_record input.bag output.record

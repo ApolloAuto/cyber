@@ -134,13 +134,6 @@ function parse_arguments() {
     [[ -n "${shm_size}" ]] && SHM_SIZE="${shm_size}"
 }
 
-# if [ ! -e /apollo ]; then
-#    sudo ln -sf "${CYBER_ROOT_DIR}" /apollo
-# fi
-# if [ -e /proc/sys/kernel ]; then
-#    echo "/apollo/data/core/core_%e.%p" | sudo tee /proc/sys/kernel/core_pattern > /dev/null
-# fi
-# <cyber|dev>-<arch>-<ubuntu-release>-<timestamp>
 function guess_arch_from_tag() {
     local tag="$1"
     local __result="$2"

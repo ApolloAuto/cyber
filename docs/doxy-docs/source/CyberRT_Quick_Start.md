@@ -123,7 +123,7 @@ To configure the DAG file (`common.dag` here), specify the following items:
 ```protobuf
 # Define all components in DAG streaming.
 module_config {
-module_library : "/apollo/bazel-bin/cyber/examples/common_component_example/libcommon_component_example.so"
+module_library : "bazel-bin/cyber/examples/common_component_example/libcommon_component_example.so"
 components {
     class_name : "CommonComponentSample"
     config {
@@ -151,7 +151,7 @@ To configure the launch (`common.launch`) file, specify the following items:
 <cyber>
     <component>
         <name>common</name>
-        <dag_conf>/apollo/cyber/examples/common_component_example/common.dag</dag_conf>
+        <dag_conf>cyber/examples/common_component_example/common.dag</dag_conf>
         <process_name>common</process_name>
     </component>
 </cyber>
@@ -164,8 +164,7 @@ To configure the launch (`common.launch`) file, specify the following items:
 Build the sample component by running the command below:
 
 ```bash
-cd /apollo
-bash apollo.sh build
+bazel build //cyber/...
 ```
 
 ### Environment setup
@@ -173,7 +172,7 @@ bash apollo.sh build
 Then configure the environment:
 
 ```bash
-source cyber/setup.bash
+source setup.bash
 
 # To see output from terminal
 export GLOG_alsologtostderr=1
@@ -200,17 +199,17 @@ mainboard -d cyber/examples/common_component_example/common.dag
 Open another terminal:
 
 ```bash
-source cyber/setup.bash
+source setup.bash
 export GLOG_alsologtostderr=1
-/apollo/bazel-bin/cyber/examples/common_component_example/channel_test_writer
+./bazel-bin/cyber/examples/common_component_example/channel_test_writer
 ```
 
 Open the 3rd terminal and run:
 
 ```bash
-source cyber/setup.bash
+source setup.bash
 export GLOG_alsologtostderr=1
-/apollo/bazel-bin/cyber/examples/common_component_example/channel_prediction_writer
+./bazel-bin/cyber/examples/common_component_example/channel_prediction_writer
 ```
 
 And you should see output from terminal #1 like the following:

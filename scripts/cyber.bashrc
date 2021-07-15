@@ -22,7 +22,7 @@ CYBER_IN_DOCKER=false
 # If inside docker container
 if [ -f /.dockerenv ]; then
   CYBER_IN_DOCKER=true
-  CYBER_ROOT_DIR="/apollo"
+  CYBER_ROOT_DIR="/cyber"
 fi
 
 export CYBER_ROOT_DIR="${CYBER_ROOT_DIR}"

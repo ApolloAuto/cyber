@@ -2,13 +2,7 @@
 
 ## How to Build
 
-```
-./apollo.sh build cyber
-```
-
-Or if you use Bazel directly,
-
-```
+```bash
 bazel build //examples/common_component_example/...
 ```
 
@@ -16,22 +10,22 @@ bazel build //examples/common_component_example/...
 
 ### Enable logging to stderr
 
-- Change `GLOG_alsologtostderr` from `0` to `1` in `cyber/setup.bash`
-- Run `source cyber/setup.bash` in current console.
+- Change `GLOG_alsologtostderr` from `0` to `1` in `setup.bash`
+- Run `source setup.bash` in current console.
 
-```
+```bash
 export GLOG_alsologtostderr=1
 ```
 
 ### Start the sample component
 
-```
+```bash
 cyber_launch start examples/common_component_example/common.launch
 ```
 
 Or
 
-```
+```bash
 mainbooard -d examples/common_component_example/common.dag
 ```
 
@@ -39,13 +33,13 @@ mainbooard -d examples/common_component_example/common.dag
 
 Open two more terminals, run the following commands respectively.
 
-```
+```bash
 bazel run  //examples/common_component_example:channel_test_writer
 ```
 
 and ...
 
-```
+```bash
 bazel run //examples/common_component_example:channel_prediction_writer
 ```
 

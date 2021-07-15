@@ -514,7 +514,7 @@ Cyber log library is built on top of glog. The following header files need to be
 
 ### Log configuration
 
-Default global config path: cyber/setup.bash
+Default global config path: setup.bash
 
 The configs below could be modified by devloper:
 
