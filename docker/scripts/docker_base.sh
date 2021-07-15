@@ -16,7 +16,7 @@
 # limitations under the License.
 ###############################################################################
 TOP_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
-source "${TOP_DIR}/scripts/apollo.bashrc"
+source "${TOP_DIR}/scripts/cyber.bashrc"
 
 unset TOP_DIR
 
@@ -85,7 +85,7 @@ function determine_gpu_use_host() {
 function remove_container_if_exists() {
     local container="$1"
     if docker ps -a --format '{{.Names}}' | grep -q "${container}"; then
-        info "Removing existing Apollo container: ${container}"
+        info "Removing existing Cyber container: ${container}"
         docker stop "${container}" >/dev/null
         docker rm -v -f "${container}" 2>/dev/null
     fi
@@ -95,7 +95,7 @@ function postrun_start_user() {
     local container="$1"
     if [ "${USER}" != "root" ]; then
         docker exec -u root "${container}" \
-            bash -c '/apollo/scripts/docker_start_user.sh'
+            bash -c '/cyber/scripts/docker_start_user.sh'
     fi
 }
 
@@ -128,7 +128,7 @@ function check_agreement() {
         return 0
     fi
     local agreement_file
-    agreement_file="${APOLLO_ROOT_DIR}/scripts/AGREEMENT.txt"
+    agreement_file="${CYBER_ROOT_DIR}/scripts/AGREEMENT.txt"
     if [[ ! -f "${agreement_file}" ]]; then
         error "AGREEMENT ${agreement_file} does not exist."
         exit 1

@@ -25,7 +25,7 @@ import sys
 
 # init vars
 wrapper_lib_path = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                                '../internal'))
+                                                'internal'))
 sys.path.append(wrapper_lib_path)
 
 _CYBER = importlib.import_module('_cyber_wrapper')

@@ -16,11 +16,11 @@
 # limitations under the License.
 ###############################################################################
 
-APOLLO_ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )"
+CYBER_ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )/../.." && pwd )"
 
 # Setup core dump format.
 if [ -e /proc/sys/kernel ]; then
-  echo "${APOLLO_ROOT_DIR}/data/core/core_%e.%p" | \
+  echo "${CYBER_ROOT_DIR}/data/core/core_%e.%p" | \
       sudo tee /proc/sys/kernel/core_pattern
 fi
 
@@ -32,7 +32,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # Add udev rules.
-sudo cp -r ${APOLLO_ROOT_DIR}/docker/setup_host/etc/* /etc/
+sudo cp -r ${CYBER_ROOT_DIR}/docker/setup_host/etc/* /etc/
 
 # Add uvcvideo clock config.
 grep -q uvcvideo /etc/modules

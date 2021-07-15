@@ -2,7 +2,7 @@
 TOP_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P)"
 source ${TOP_DIR}/scripts/common.bashrc
 
-export CYBER_PATH="${TOP_DIR}/cyber"
+export CYBER_PATH="${TOP_DIR}"
 
 bazel_bin_path="${TOP_DIR}/bazel-bin"
 mainboard_path="${bazel_bin_path}/cyber/mainboard"
@@ -40,4 +40,4 @@ export sysmo_start=0
 # for DEBUG log
 #export GLOG_v=4
 
-source ${CYBER_PATH}/tools/cyber_tools_auto_complete.bash
+source ${TOP_DIR}/cyber/tools/cyber_tools_auto_complete.bash

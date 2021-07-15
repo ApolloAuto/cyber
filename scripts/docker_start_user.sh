@@ -93,7 +93,7 @@ function setup_apollo_directories() {
 # where the `/apollo` directory may not exist.
 function setup_core_pattern() {
   if [[ -w /proc/sys/kernel/core_pattern ]]; then
-    echo "/apollo/data/core/core_%e.%p" > /proc/sys/kernel/core_pattern
+    echo "/cyber/data/core/core_%e.%p" > /proc/sys/kernel/core_pattern
   fi
 }
 

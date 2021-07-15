@@ -135,7 +135,7 @@ function parse_arguments() {
 }
 
 # if [ ! -e /apollo ]; then
-#    sudo ln -sf "${APOLLO_ROOT_DIR}" /apollo
+#    sudo ln -sf "${CYBER_ROOT_DIR}" /apollo
 # fi
 # if [ -e /proc/sys/kernel ]; then
 #    echo "/apollo/data/core/core_%e.%p" | sudo tee /proc/sys/kernel/core_pattern > /dev/null
@@ -203,12 +203,11 @@ function setup_devices_and_mount_volumes() {
     local __retval="$1"
 
     if [[ "${HOST_ARCH}" == "${TARGET_ARCH}" ]]; then
-        source "${APOLLO_ROOT_DIR}/scripts/apollo_base.sh"
         setup_device
     fi
 
     local volumes
-    volumes="-v ${APOLLO_ROOT_DIR}:/apollo"
+    volumes="-v ${CYBER_ROOT_DIR}:/cyber"
 
     if [[ "${HOST_OS}" != "Linux" ]]; then
         warning "Running Cyber container on ${HOST_OS} is experimental!"
@@ -332,7 +331,7 @@ function start_cyber_container() {
         -e OMP_NUM_THREADS=1 \
         ${local_volumes} \
         --net host \
-        -w /apollo \
+        -w /cyber \
         --add-host "${CYBER_INSIDE}:172.0.0.1" \
         --add-host "${local_host}:127.0.0.1" \
         --hostname "${CYBER_INSIDE}" \

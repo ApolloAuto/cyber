@@ -16,23 +16,21 @@
 # limitations under the License.
 ###############################################################################
 
-APOLLO_ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
-APOLLO_IN_DOCKER=false
+CYBER_ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
+CYBER_IN_DOCKER=false
 
 # If inside docker container
 if [ -f /.dockerenv ]; then
-  APOLLO_IN_DOCKER=true
-  APOLLO_ROOT_DIR="/apollo"
+  CYBER_IN_DOCKER=true
+  CYBER_ROOT_DIR="/apollo"
 fi
 
-export APOLLO_ROOT_DIR="${APOLLO_ROOT_DIR}"
-export APOLLO_IN_DOCKER="${APOLLO_IN_DOCKER}"
-export APOLLO_CACHE_DIR="${APOLLO_ROOT_DIR}/.cache"
-export APOLLO_SYSROOT_DIR="/opt/apollo/sysroot"
+export CYBER_ROOT_DIR="${CYBER_ROOT_DIR}"
+export CYBER_IN_DOCKER="${CYBER_IN_DOCKER}"
 
 export TAB="    " # 4 spaces
 
-source ${APOLLO_ROOT_DIR}/scripts/common.bashrc
+source ${CYBER_ROOT_DIR}/scripts/common.bashrc
 
 : ${VERBOSE:=yes}
 
@@ -218,7 +216,7 @@ function run() {
     echo "${@}"
     "${@}" || exit $?
   else
-    local errfile="${APOLLO_ROOT_DIR}/.errors.log"
+    local errfile="${CYBER_ROOT_DIR}/.errors.log"
     echo "${@}" >"${errfile}"
     if ! "${@}" >>"${errfile}" 2>&1; then
       local exitcode=$?
@@ -231,21 +229,21 @@ function run() {
 #commit_id=$(git log -1 --pretty=%H)
 function git_sha1() {
   if [ -x "$(which git 2>/dev/null)" ] &&
-    [ -d "${APOLLO_ROOT_DIR}/.git" ]; then
+    [ -d "${CYBER_ROOT_DIR}/.git" ]; then
     git rev-parse --short HEAD 2>/dev/null || true
   fi
 }
 
 function git_date() {
   if [ -x "$(which git 2>/dev/null)" ] &&
-    [ -d "${APOLLO_ROOT_DIR}/.git" ]; then
+    [ -d "${CYBER_ROOT_DIR}/.git" ]; then
     git log -1 --pretty=%ai | cut -d " " -f 1 || true
   fi
 }
 
 function git_branch() {
   if [ -x "$(which git 2>/dev/null)" ] &&
-    [ -d "${APOLLO_ROOT_DIR}/.git" ]; then
+    [ -d "${CYBER_ROOT_DIR}/.git" ]; then
     git rev-parse --abbrev-ref HEAD
   else
     echo "@non-git"
@@ -268,26 +266,58 @@ function optarg_check_for_opt() {
   fi
 }
 
-function setup_gpu_support() {
-  if [ -e /usr/local/cuda/ ]; then
-    pathprepend /usr/local/cuda/bin
+function create_data_dir() {
+  local DATA_DIR="${CYBER_ROOT_DIR}/data"
+  mkdir -p "${DATA_DIR}/log"
+  mkdir -p "${DATA_DIR}/bag"
+  mkdir -p "${DATA_DIR}/core"
+}
+
+function setup_device_for_amd64() {
+  # setup CAN device
+  local NUM_PORTS=8
+  for i in $(seq 0 $((${NUM_PORTS} - 1))); do
+    if [[ -e /dev/can${i} ]]; then
+      continue
+    elif [[ -e /dev/zynq_can${i} ]]; then
+      # soft link if sensorbox exist
+      sudo ln -s /dev/zynq_can${i} /dev/can${i}
+    else
+      break
+      # sudo mknod --mode=a+rw /dev/can${i} c 52 ${i}
+    fi
+  done
+
+  # Check Nvidia device
+  if [[ ! -e /dev/nvidia0 ]]; then
+    warning "No device named /dev/nvidia0"
   fi
-
-  determine_gpu_use_target
-
-  # TODO(infra): revisit this for CPU builds on GPU capable machines
-  local dev="cpu"
-  if [ "${USE_GPU_TARGET}" -gt 0 ]; then
-    dev="gpu"
+  if [[ ! -e /dev/nvidiactl ]]; then
+    warning "No device named /dev/nvidiactl"
   fi
-
-  local torch_path="/usr/local/libtorch_${dev}/lib"
-  if [ -d "${torch_path}" ]; then
-    # Runtime default: for ./bazel-bin/xxx/yyy to work as expected
-    pathprepend ${torch_path} LD_LIBRARY_PATH
+  if [[ ! -e /dev/nvidia-uvm ]]; then
+    warning "No device named /dev/nvidia-uvm"
+  fi
+  if [[ ! -e /dev/nvidia-uvm-tools ]]; then
+    warning "No device named /dev/nvidia-uvm-tools"
+  fi
+  if [[ ! -e /dev/nvidia-modeset ]]; then
+    warning "No device named /dev/nvidia-modeset"
   fi
 }
 
-if ${APOLLO_IN_DOCKER} ; then
-    setup_gpu_support
+function setup_device() {
+  if [ "$(uname -s)" != "Linux" ]; then
+    info "Not on Linux, skip mapping devices."
+    return
+  fi
+  if [[ "${HOST_ARCH}" == "x86_64" ]]; then
+    setup_device_for_amd64
+  else
+    setup_device_for_aarch64
+  fi
+}
+
+if ${CYBER_IN_DOCKER} ; then
+  create_data_dir
 fi

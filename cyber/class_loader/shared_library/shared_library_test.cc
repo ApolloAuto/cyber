@@ -23,7 +23,7 @@
 namespace {
 
 const std::string& SAMPLE_LIB =
-    "/apollo/bazel-bin/cyber/class_loader/shared_library/libsample.so";
+    "/cyber/bazel-bin/cyber/class_loader/shared_library/libsample.so";
 constexpr double epsilon = 1.0e-8;
 
 }  // namespace

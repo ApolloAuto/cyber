@@ -34,6 +34,9 @@ nohup.out
 # Editor configs
 .ycm_extra_conf.py
 
+# Data
+/data
+
 # Localization
 modules/localization/msf/local_map/test_data/ndt_map/map_data
 
