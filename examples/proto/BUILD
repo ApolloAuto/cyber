@@ -6,20 +6,88 @@ load("//tools:python_rules.bzl", "py_proto_library")
 package(default_visibility = ["//visibility:public"])
 
 cc_proto_library(
-    name = "examples_cc_proto",
+    name = "simple_msg_cc_proto",
     deps = [
-        ":examples_proto",
+        ":simple_msg_proto",
     ],
 )
 
 proto_library(
-    name = "examples_proto",
-    srcs = ["examples.proto"],
+    name = "simple_msg_proto",
+    srcs = ["simple_msg.proto"],
+    deps = [
+        ":header_proto",
+    ],
 )
 
 py_proto_library(
-    name = "examples_py_pb2",
+    name = "simple_msg_py_pb2",
     deps = [
-        ":examples_proto",
+        ":simple_msg_proto",
+        ":header_py_pb2",
+    ],
+)
+
+cc_proto_library(
+    name = "header_cc_proto",
+    deps = [
+        ":header_proto",
+    ],
+)
+
+proto_library(
+    name = "header_proto",
+    srcs = ["header.proto"],
+)
+
+py_proto_library(
+    name = "header_py_pb2",
+    deps = [
+        ":header_proto",
+    ],
+)
+cc_proto_library(
+    name = "driver_cc_proto",
+    deps = [
+        ":driver_proto",
+    ],
+)
+
+proto_library(
+    name = "driver_proto",
+    srcs = ["driver.proto"],
+    deps = [
+        ":header_proto",
+    ],
+)
+
+py_proto_library(
+    name = "driver_py_pb2",
+    deps = [
+        ":driver_proto",
+        ":header_py_pb2",
+    ],
+)
+
+cc_proto_library(
+    name = "chatter_cc_proto",
+    deps = [
+        ":chatter_proto",
+    ],
+)
+
+proto_library(
+    name = "chatter_proto",
+    srcs = ["chatter.proto"],
+    deps = [
+        ":header_proto",
+    ],
+)
+
+py_proto_library(
+    name = "chatter_py_pb2",
+    deps = [
+        ":chatter_proto",
+        ":header_py_pb2",
     ],
 )

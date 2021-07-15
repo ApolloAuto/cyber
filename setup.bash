@@ -1,11 +1,10 @@
 #! /usr/bin/env bash
-TOP_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )/.." && pwd -P)"
-source ${TOP_DIR}/scripts/apollo.bashrc
+TOP_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P)"
+source ${TOP_DIR}/scripts/common.bashrc
 
-export APOLLO_BAZEL_DIST_DIR="${APOLLO_CACHE_DIR}/distdir"
-export CYBER_PATH="${APOLLO_ROOT_DIR}/cyber"
+export CYBER_PATH="${TOP_DIR}/cyber"
 
-bazel_bin_path="${APOLLO_ROOT_DIR}/bazel-bin"
+bazel_bin_path="${TOP_DIR}/bazel-bin"
 mainboard_path="${bazel_bin_path}/cyber/mainboard"
 cyber_tool_path="${bazel_bin_path}/cyber/tools"
 recorder_path="${cyber_tool_path}/cyber_recorder"
@@ -14,7 +13,6 @@ channel_path="${cyber_tool_path}/cyber_channel"
 node_path="${cyber_tool_path}/cyber_node"
 service_path="${cyber_tool_path}/cyber_service"
 monitor_path="${cyber_tool_path}/cyber_monitor"
-visualizer_path="${bazel_bin_path}/modules/tools/visualizer"
 
 # TODO(all): place all these in one place and pathprepend
 for entry in "${mainboard_path}" \
@@ -26,12 +24,13 @@ for entry in "${mainboard_path}" \
     pathprepend "${entry}"
 done
 
-pathprepend ${bazel_bin_path}/cyber/python/internal PYTHONPATH
+pathprepend ${bazel_bin_path} PYTHONPATH
+pathprepend ${bazel_bin_path}/cyber_py3/internal PYTHONPATH
 
 export CYBER_DOMAIN_ID=80
 export CYBER_IP=127.0.0.1
 
-export GLOG_log_dir="${APOLLO_ROOT_DIR}/data/log"
+export GLOG_log_dir="${TOP_DIR}/data/log"
 export GLOG_alsologtostderr=0
 export GLOG_colorlogtostderr=1
 export GLOG_minloglevel=0

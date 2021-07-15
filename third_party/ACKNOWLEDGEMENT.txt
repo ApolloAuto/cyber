@@ -1,0 +1,45 @@
+* Redistributions of source code must retain all third party copyright notice.
+* Redistributions in binary form must reproduce all third party copyright notice
+  in the documentation and/or other materials provided with the distribution.
+
+* Abseil
+    Apache License 2.0
+    https://github.com/abseil/abseil-cpp/blob/master/LICENSE
+* Bazel:
+    Apache License 2.0
+    https://github.com/bazelbuild/bazel/blob/master/LICENSE
+* Boost:
+    Boost Software License 1.0
+    http://www.boost.org/users/license.html
+    http://www.boost.org/LICENSE_1_0.txt
+* Buildifier
+    Apache License 2.0
+    https://github.com/bazelbuild/buildtools/blob/master/LICENSE
+* Cpplint
+    BSD 3-clause "New" or "Revised" License
+    https://github.com/cpplint/cpplint/blob/master/LICENSE
+* Docker
+    Apache License 2.0
+    https://www.docker.com/components-licenses
+* Fast RTPS
+    Apache License 2.0
+    https://github.com/eProsima/Fast-RTPS/blob/release/1.4.0/LICENSE
+* GFlags
+    BSD 3-clause "New" or "Revised" License
+    https://github.com/gflags/gflags/blob/master/COPYING.txt
+* GLog
+    BSD 3-Clause License
+    https://github.com/google/glog/blob/master/COPYING
+* gRPC
+    Apache License 2.0
+    https://github.com/grpc/grpc/blob/master/LICENSE
+* GoogleTest
+    https://github.com/google/googletest/blob/master/googletest/LICENSE
+* Prettier
+    MIT License
+    https://github.com/prettier/prettier/blob/master/LICENSE
+* Protocol Buffer
+    https://github.com/protocolbuffers/protobuf/blob/master/LICENSE
+* python-requests
+    Apache2 License
+    http://docs.python-requests.org/en/master/user/intro/#apache2-license

@@ -1,0 +1,24 @@
+Log file created at: 2021/07/15 12:58:21
+Running on machine: in-cyber-docker
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0715 12:58:21.296187 335985 global_data.cc:153] host ip: 172.20.72.11
+W0715 12:58:21.297972 335985 scheduler_factory.cc:63] Scheduler conf named /apollo/cyber/conf/python3.6_335985.conf not found, use default.
+I0715 12:58:21.298066 335993 processor.cc:42] processor_tid: 335993
+I0715 12:58:21.298113 335994 processor.cc:42] processor_tid: 335994
+I0715 12:58:21.298175 335995 processor.cc:42] processor_tid: 335995
+I0715 12:58:21.298243 335996 processor.cc:42] processor_tid: 335996
+I0715 12:58:21.298310 335997 processor.cc:42] processor_tid: 335997
+I0715 12:58:21.298353 335998 processor.cc:42] processor_tid: 335998
+I0715 12:58:21.298378 335999 processor.cc:42] processor_tid: 335999
+I0715 12:58:21.298483 336001 processor.cc:42] processor_tid: 336001
+I0715 12:58:21.298485 336000 processor.cc:42] processor_tid: 336000
+I0715 12:58:21.298511 336002 processor.cc:42] processor_tid: 336002
+I0715 12:58:21.298534 336003 processor.cc:42] processor_tid: 336003
+I0715 12:58:21.298585 336004 processor.cc:42] processor_tid: 336004
+I0715 12:58:21.298621 336005 processor.cc:42] processor_tid: 336005
+I0715 12:58:21.298657 336006 processor.cc:42] processor_tid: 336006
+I0715 12:58:21.298692 336007 processor.cc:42] processor_tid: 336007
+I0715 12:58:21.298719 336008 processor.cc:42] processor_tid: 336008
+I0715 12:58:21.298722 335985 init.cc:113] Register exit handle succ.
+I0715 12:58:21.298728 335985 py_cyber.h:58] cyber init succ.
+E0715 12:58:23.304667 335985 py_cyber.h:524] no service found.
