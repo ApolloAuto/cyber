@@ -1,4 +1,5 @@
 load("//tools:cpplint.bzl", "cpplint")
+load("@rules_cc//cc:defs.bzl", "cc_library")
 load("//tools/install:install.bzl", "install", "install_files")
 
 package(default_visibility = ["//visibility:public"])
@@ -7,6 +8,13 @@ exports_files([
     "CPPLINT.cfg",
     "tox.ini",
 ])
+
+cc_library(
+    name = "cyber",
+    deps = [
+        "//cyber",
+    ],
+)
 
 filegroup(
     name = "cyber_conf",
@@ -36,6 +44,5 @@ install_files(
         "//cyber/proto:record_py_pb2",
     ],
 )
-
 
 cpplint()
