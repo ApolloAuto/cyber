@@ -18,6 +18,8 @@
 CURR_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
 source "${CURR_DIR}/docker_base.sh"
 
+CACHE_ROOT_DIR="${CYBER_ROOT_DIR}/.cache"
+
 VERSION_X86_64="cyber-x86_64-18.04-20210315_1535"
 TESTING_VERSION_X86_64="cyber-x86_64-18.04-testing-20210108_1510"
 
@@ -194,6 +196,8 @@ function determine_target_version_and_arch() {
 
 function setup_devices_and_mount_volumes() {
     local __retval="$1"
+
+    [ -d "${CACHE_ROOT_DIR}" ] || mkdir -p "${CACHE_ROOT_DIR}"
 
     if [[ "${HOST_ARCH}" == "${TARGET_ARCH}" ]]; then
         setup_device

@@ -28,7 +28,7 @@ PY_TIMER_CB_TYPE = ctypes.CFUNCTYPE(ctypes.c_void_p)
 
 # init vars
 wrapper_lib_path = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                                'nternal'))
+                                                'internal'))
 sys.path.append(wrapper_lib_path)
 
 _CYBER_TIMER = importlib.import_module('_cyber_timer_wrapper')

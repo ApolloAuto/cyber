@@ -40,7 +40,7 @@ py_binary(
     name = "my_demo",
     srcs = ["my_demo.py"],
     deps = [
-        "//cyber_py3/cyber_py3:cyber",
+        "//cyber_py3:cyber",
     ],
 )
 ```
