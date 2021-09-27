@@ -36,19 +36,19 @@ using apollo::cyber::base::WriteLockGuard;
 using apollo::cyber::common::GetAbsolutePath;
 using apollo::cyber::common::GetProtoFromFile;
 using apollo::cyber::common::GlobalData;
+using apollo::cyber::common::ModuleRoot;
 using apollo::cyber::common::PathExists;
-using apollo::cyber::common::WorkRoot;
 using apollo::cyber::croutine::RoutineState;
 
 SchedulerChoreography::SchedulerChoreography()
     : choreography_processor_prio_(0), pool_processor_prio_(0) {
   std::string conf("conf/");
   conf.append(GlobalData::Instance()->ProcessGroup()).append(".conf");
-  auto cfg_file = GetAbsolutePath(WorkRoot(), conf);
+  auto cfg_file = GetAbsolutePath(ModuleRoot(), conf);
 
   apollo::cyber::proto::CyberConfig cfg;
   if (PathExists(cfg_file) && GetProtoFromFile(cfg_file, &cfg)) {
-    for (auto& thr : cfg.scheduler_conf().threads()) {
+    for (auto &thr : cfg.scheduler_conf().threads()) {
       inner_thr_confs_[thr.name()] = thr;
     }
 
@@ -57,7 +57,7 @@ SchedulerChoreography::SchedulerChoreography()
       ProcessLevelResourceControl();
     }
 
-    const apollo::cyber::proto::ChoreographyConf& choreography_conf =
+    const apollo::cyber::proto::ChoreographyConf &choreography_conf =
         cfg.scheduler_conf().choreography_conf();
     proc_num_ = choreography_conf.choreography_processor_num();
     choreography_affinity_ = choreography_conf.choreography_affinity();
@@ -74,13 +74,13 @@ SchedulerChoreography::SchedulerChoreography()
     pool_processor_prio_ = choreography_conf.pool_processor_prio();
     ParseCpuset(choreography_conf.pool_cpuset(), &pool_cpuset_);
 
-    for (const auto& task : choreography_conf.tasks()) {
+    for (const auto &task : choreography_conf.tasks()) {
       cr_confs_[task.name()] = task;
     }
   }
 
   if (proc_num_ == 0) {
-    auto& global_conf = GlobalData::Instance()->Config();
+    auto &global_conf = GlobalData::Instance()->Config();
     if (global_conf.has_scheduler_conf() &&
         global_conf.scheduler_conf().has_default_proc_num()) {
       proc_num_ = global_conf.scheduler_conf().default_proc_num();
@@ -120,10 +120,10 @@ void SchedulerChoreography::CreateProcessor() {
   }
 }
 
-bool SchedulerChoreography::DispatchTask(const std::shared_ptr<CRoutine>& cr) {
+bool SchedulerChoreography::DispatchTask(const std::shared_ptr<CRoutine> &cr) {
   // we use multi-key mutex to prevent race condition
   // when del && add cr with same crid
-  MutexWrapper* wrapper = nullptr;
+  MutexWrapper *wrapper = nullptr;
   if (!id_map_mutex_.Get(cr->id(), &wrapper)) {
     {
       std::lock_guard<std::mutex> wl_lg(cr_wl_mtx_);
@@ -157,7 +157,7 @@ bool SchedulerChoreography::DispatchTask(const std::shared_ptr<CRoutine>& cr) {
   uint32_t pid = cr->processor_id();
   if (pid < proc_num_) {
     // Enqueue task to Choreo Policy.
-    static_cast<ChoreographyContext*>(pctxs_[pid].get())->Enqueue(cr);
+    static_cast<ChoreographyContext *>(pctxs_[pid].get())->Enqueue(cr);
   } else {
     // Check if task prio is reasonable.
     if (cr->priority() >= MAX_PRIO) {
@@ -179,7 +179,7 @@ bool SchedulerChoreography::DispatchTask(const std::shared_ptr<CRoutine>& cr) {
   return true;
 }
 
-bool SchedulerChoreography::RemoveTask(const std::string& name) {
+bool SchedulerChoreography::RemoveTask(const std::string &name) {
   if (cyber_unlikely(stop_)) {
     return true;
   }
@@ -191,7 +191,7 @@ bool SchedulerChoreography::RemoveTask(const std::string& name) {
 bool SchedulerChoreography::RemoveCRoutine(uint64_t crid) {
   // we use multi-key mutex to prevent race condition
   // when del && add cr with same crid
-  MutexWrapper* wrapper = nullptr;
+  MutexWrapper *wrapper = nullptr;
   if (!id_map_mutex_.Get(crid, &wrapper)) {
     {
       std::lock_guard<std::mutex> wl_lg(cr_wl_mtx_);
@@ -220,7 +220,7 @@ bool SchedulerChoreography::RemoveCRoutine(uint64_t crid) {
 
   // rm cr from pool if rt not in choreo context
   if (pid < proc_num_) {
-    return static_cast<ChoreographyContext*>(pctxs_[pid].get())
+    return static_cast<ChoreographyContext *>(pctxs_[pid].get())
         ->RemoveCRoutine(crid);
   } else {
     return ClassicContext::RemoveCRoutine(cr);
@@ -252,7 +252,7 @@ bool SchedulerChoreography::NotifyProcessor(uint64_t crid) {
   }
 
   if (pid < proc_num_) {
-    static_cast<ChoreographyContext*>(pctxs_[pid].get())->Notify();
+    static_cast<ChoreographyContext *>(pctxs_[pid].get())->Notify();
   } else {
     ClassicContext::Notify(cr->group_name());
   }
@@ -260,6 +260,6 @@ bool SchedulerChoreography::NotifyProcessor(uint64_t crid) {
   return true;
 }
 
-}  // namespace scheduler
-}  // namespace cyber
-}  // namespace apollo
+} // namespace scheduler
+} // namespace cyber
+} // namespace apollo

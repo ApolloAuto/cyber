@@ -38,16 +38,16 @@ namespace scheduler {
 using apollo::cyber::common::GetAbsolutePath;
 using apollo::cyber::common::GetProtoFromFile;
 using apollo::cyber::common::GlobalData;
+using apollo::cyber::common::ModuleRoot;
 using apollo::cyber::common::PathExists;
-using apollo::cyber::common::WorkRoot;
 
 namespace {
-std::atomic<Scheduler*> instance = {nullptr};
+std::atomic<Scheduler *> instance = {nullptr};
 std::mutex mutex;
-}  // namespace
+} // namespace
 
-Scheduler* Instance() {
-  Scheduler* obj = instance.load(std::memory_order_acquire);
+Scheduler *Instance() {
+  Scheduler *obj = instance.load(std::memory_order_acquire);
   if (obj == nullptr) {
     std::lock_guard<std::mutex> lock(mutex);
     obj = instance.load(std::memory_order_relaxed);
@@ -55,7 +55,7 @@ Scheduler* Instance() {
       std::string policy("classic");
       std::string conf("conf/");
       conf.append(GlobalData::Instance()->ProcessGroup()).append(".conf");
-      auto cfg_file = GetAbsolutePath(WorkRoot(), conf);
+      auto cfg_file = GetAbsolutePath(ModuleRoot(), conf);
       apollo::cyber::proto::CyberConfig cfg;
       if (PathExists(cfg_file) && GetProtoFromFile(cfg_file, &cfg)) {
         policy = cfg.scheduler_conf().policy();
@@ -78,14 +78,14 @@ Scheduler* Instance() {
 }
 
 void CleanUp() {
-  Scheduler* obj = instance.load(std::memory_order_acquire);
+  Scheduler *obj = instance.load(std::memory_order_acquire);
   if (obj != nullptr) {
     obj->Shutdown();
   }
 }
 
-}  // namespace scheduler
-}  // namespace cyber
-}  // namespace apollo
+} // namespace scheduler
+} // namespace cyber
+} // namespace apollo
 
-#endif  // CYBER_SCHEDULER_SCHEDULER_FACTORY_H_
+#endif // CYBER_SCHEDULER_SCHEDULER_FACTORY_H_

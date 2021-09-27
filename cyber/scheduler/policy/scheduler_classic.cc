@@ -34,18 +34,18 @@ using apollo::cyber::base::WriteLockGuard;
 using apollo::cyber::common::GetAbsolutePath;
 using apollo::cyber::common::GetProtoFromFile;
 using apollo::cyber::common::GlobalData;
+using apollo::cyber::common::ModuleRoot;
 using apollo::cyber::common::PathExists;
-using apollo::cyber::common::WorkRoot;
 using apollo::cyber::croutine::RoutineState;
 
 SchedulerClassic::SchedulerClassic() {
   std::string conf("conf/");
   conf.append(GlobalData::Instance()->ProcessGroup()).append(".conf");
-  auto cfg_file = GetAbsolutePath(WorkRoot(), conf);
+  auto cfg_file = GetAbsolutePath(ModuleRoot(), conf);
 
   apollo::cyber::proto::CyberConfig cfg;
   if (PathExists(cfg_file) && GetProtoFromFile(cfg_file, &cfg)) {
-    for (auto& thr : cfg.scheduler_conf().threads()) {
+    for (auto &thr : cfg.scheduler_conf().threads()) {
       inner_thr_confs_[thr.name()] = thr;
     }
 
@@ -55,8 +55,8 @@ SchedulerClassic::SchedulerClassic() {
     }
 
     classic_conf_ = cfg.scheduler_conf().classic_conf();
-    for (auto& group : classic_conf_.groups()) {
-      auto& group_name = group.name();
+    for (auto &group : classic_conf_.groups()) {
+      auto &group_name = group.name();
       for (auto task : group.tasks()) {
         task.set_group_name(group_name);
         cr_confs_[task.name()] = task;
@@ -66,7 +66,7 @@ SchedulerClassic::SchedulerClassic() {
     // if do not set default_proc_num in scheduler conf
     // give a default value
     uint32_t proc_num = 2;
-    auto& global_conf = GlobalData::Instance()->Config();
+    auto &global_conf = GlobalData::Instance()->Config();
     if (global_conf.has_scheduler_conf() &&
         global_conf.scheduler_conf().has_default_proc_num()) {
       proc_num = global_conf.scheduler_conf().default_proc_num();
@@ -82,15 +82,15 @@ SchedulerClassic::SchedulerClassic() {
 }
 
 void SchedulerClassic::CreateProcessor() {
-  for (auto& group : classic_conf_.groups()) {
-    auto& group_name = group.name();
+  for (auto &group : classic_conf_.groups()) {
+    auto &group_name = group.name();
     auto proc_num = group.processor_num();
     if (task_pool_size_ == 0) {
       task_pool_size_ = proc_num;
     }
 
-    auto& affinity = group.affinity();
-    auto& processor_policy = group.processor_policy();
+    auto &affinity = group.affinity();
+    auto &processor_policy = group.processor_policy();
     auto processor_prio = group.processor_prio();
     std::vector<int> cpuset;
     ParseCpuset(group.cpuset(), &cpuset);
@@ -109,10 +109,10 @@ void SchedulerClassic::CreateProcessor() {
   }
 }
 
-bool SchedulerClassic::DispatchTask(const std::shared_ptr<CRoutine>& cr) {
+bool SchedulerClassic::DispatchTask(const std::shared_ptr<CRoutine> &cr) {
   // we use multi-key mutex to prevent race condition
   // when del && add cr with same crid
-  MutexWrapper* wrapper = nullptr;
+  MutexWrapper *wrapper = nullptr;
   if (!id_map_mutex_.Get(cr->id(), &wrapper)) {
     {
       std::lock_guard<std::mutex> wl_lg(cr_wl_mtx_);
@@ -181,7 +181,7 @@ bool SchedulerClassic::NotifyProcessor(uint64_t crid) {
   return false;
 }
 
-bool SchedulerClassic::RemoveTask(const std::string& name) {
+bool SchedulerClassic::RemoveTask(const std::string &name) {
   if (cyber_unlikely(stop_)) {
     return true;
   }
@@ -193,7 +193,7 @@ bool SchedulerClassic::RemoveTask(const std::string& name) {
 bool SchedulerClassic::RemoveCRoutine(uint64_t crid) {
   // we use multi-key mutex to prevent race condition
   // when del && add cr with same crid
-  MutexWrapper* wrapper = nullptr;
+  MutexWrapper *wrapper = nullptr;
   if (!id_map_mutex_.Get(crid, &wrapper)) {
     {
       std::lock_guard<std::mutex> wl_lg(cr_wl_mtx_);
@@ -219,6 +219,6 @@ bool SchedulerClassic::RemoveCRoutine(uint64_t crid) {
   return ClassicContext::RemoveCRoutine(cr);
 }
 
-}  // namespace scheduler
-}  // namespace cyber
-}  // namespace apollo
+} // namespace scheduler
+} // namespace cyber
+} // namespace apollo

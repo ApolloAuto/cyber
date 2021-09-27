@@ -23,6 +23,7 @@
 
 #include "cyber/base/macros.h"
 #include "cyber/logger/logger_util.h"
+#include "cyber/common/file.h"
 
 namespace apollo {
 namespace cyber {
@@ -109,6 +110,10 @@ void AsyncLogger::FlushBuffer(const std::unique_ptr<std::deque<Msg>>& buffer) {
     if (module_logger_map_.find(module_name) == module_logger_map_.end()) {
       std::string file_name = module_name + ".log.INFO.";
       if (!FLAGS_log_dir.empty()) {
+        if (!common::PathExists(FLAGS_log_dir)) {
+          std::string cmd = std::string("mkdir -p ") + FLAGS_log_dir;
+          system(cmd.c_str());
+        }
         file_name = FLAGS_log_dir + "/" + file_name;
       }
       module_logger_map_[module_name].reset(

@@ -26,9 +26,9 @@ namespace apollo {
 namespace cyber {
 namespace common {
 
-inline std::string GetEnv(const std::string& var_name,
-                          const std::string& default_value = "") {
-  const char* var = std::getenv(var_name.c_str());
+inline std::string GetEnv(const std::string &var_name,
+                          const std::string &default_value = "") {
+  const char *var = std::getenv(var_name.c_str());
   if (var == nullptr) {
     AWARN << "Environment variable [" << var_name << "] not set, fallback to "
           << default_value;
@@ -45,8 +45,24 @@ inline const std::string WorkRoot() {
   return work_root;
 }
 
-}  // namespace common
-}  // namespace cyber
-}  // namespace apollo
+inline const std::string ModuleRoot() {
+  std::string module_root = GetEnv("MODULE_ROOT");
+  if (module_root.empty()) {
+    module_root = "/apollo/cyber";
+  }
+  return module_root;
+}
 
-#endif  // CYBER_COMMON_ENVIRONMENT_H_
+inline const std::string ModuleBinRoot() {
+  std::string module_bin_root = GetEnv("MODULE_BIN_PATH");
+  if (module_bin_root.empty()) {
+    module_bin_root = "/apollo/cyber/bazel-bin";
+  }
+  return module_bin_root;
+}
+
+} // namespace common
+} // namespace cyber
+} // namespace apollo
+
+#endif // CYBER_COMMON_ENVIRONMENT_H_
