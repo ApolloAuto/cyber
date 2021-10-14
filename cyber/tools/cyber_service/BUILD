@@ -9,5 +9,6 @@ py_binary(
     srcs = ["cyber_service.py"],
     deps = [
         "//cyber_py3:cyber",
+        "//cyber/proto:role_attributes_py_pb2",
     ],
 )
