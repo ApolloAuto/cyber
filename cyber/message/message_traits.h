@@ -193,7 +193,7 @@ SerializeToArray(const T& message, void* data, int size) {
 template <typename T>
 typename std::enable_if<!HasSerializeToArray<T>::value, bool>::type
 SerializeToArray(const T& message, void* data, int size) {
-  return false;
+  return !message.SerializeToArray(data, size);
 }
 
 template <typename T>
@@ -205,7 +205,7 @@ SerializeToString(const T& message, std::string* str) {
 template <typename T>
 typename std::enable_if<!HasSerializeToString<T>::value, bool>::type
 SerializeToString(const T& message, std::string* str) {
-  return false;
+  return !message.SerializeToString(str);
 }
 
 template <typename T>
