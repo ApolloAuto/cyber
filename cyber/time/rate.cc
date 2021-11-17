@@ -93,7 +93,9 @@ void Rate::Sleep() {
 
   // if we've taken too much time we won't sleep
   if (sleep_time < Duration(0.0)) {
-    AWARN << "Detect forward jumps in time";
+    AWARN << "Detect forward jumps in time, expect: "
+          << expected_cycle_time_.ToSecond()
+          << " actual:" << actual_cycle_time_.ToSecond();
     // if we've jumped forward in time, or the loop has taken more than a full
     // extra cycle, reset our cycle
     if (actual_end > expected_end + expected_cycle_time_) {
