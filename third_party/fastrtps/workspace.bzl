@@ -1,19 +1,17 @@
-"""Load the fastrtps library"""
+"""Loads the cyber_ws library"""
 
-# Sanitize a dependency so that it works correctly from code that includes
-# Apollo as a submodule.
-def clean_dep(dep):
-    return str(Label(dep))
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 def repo():
-    native.new_local_repository(
+    http_archive(
         name = "fastcdr",
-        build_file = clean_dep("//third_party/fastrtps:fastcdr.BUILD"),
-        path = "/usr/local/fast-rtps/include",
+        sha256 = "3b8ddedd3b251563e1eb835de5b9f9324a957788e74e88ec3022016bc7824b54",
+        strip_prefix = "fast-rtps",
+        urls = ["https://apollo-edu.bj.bcebos.com/cyber_car/third_party/fast-rtps.tar.gz?authorization=bce-auth-v1/0824ae9513f643518e120667fc2a6d50/2021-12-21T09%3A02%3A47Z/-1/host/ebd46572b0439078fadd8cb4a6fba94eafda49106c2e9f4d521d4c66307981e4"],
     )
-
-    native.new_local_repository(
+    http_archive(
         name = "fastrtps",
-        build_file = clean_dep("//third_party/fastrtps:fastrtps.BUILD"),
-        path = "/usr/local/fast-rtps/include",
+        sha256 = "3b8ddedd3b251563e1eb835de5b9f9324a957788e74e88ec3022016bc7824b54",
+        strip_prefix = "fast-rtps",
+        urls = ["https://apollo-edu.bj.bcebos.com/cyber_car/third_party/fast-rtps.tar.gz?authorization=bce-auth-v1/0824ae9513f643518e120667fc2a6d50/2021-12-21T09%3A02%3A47Z/-1/host/ebd46572b0439078fadd8cb4a6fba94eafda49106c2e9f4d521d4c66307981e4"],
     )
