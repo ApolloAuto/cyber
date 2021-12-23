@@ -112,7 +112,10 @@ void AsyncLogger::FlushBuffer(const std::unique_ptr<std::deque<Msg>>& buffer) {
       if (!FLAGS_log_dir.empty()) {
         if (!common::PathExists(FLAGS_log_dir)) {
           std::string cmd = std::string("mkdir -p ") + FLAGS_log_dir;
-          system(cmd.c_str());
+          int result = system(cmd.c_str());
+          if (-1 == result) {
+            AERROR << "Create directory: " << FLAGS_log_dir << "failed!";
+          }
         }
         file_name = FLAGS_log_dir + "/" + file_name;
       }
