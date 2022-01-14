@@ -27,19 +27,19 @@ namespace cyber {
 namespace mainboard {
 
 void ModuleController::Clear() {
-  for (auto& component : component_list_) {
+  for (auto &component : component_list_) {
     component->Shutdown();
   }
-  component_list_.clear();  // keep alive
+  component_list_.clear(); // keep alive
   class_loader_manager_.UnloadAllLibrary();
 }
 
 bool ModuleController::LoadAll() {
-  const std::string work_root = common::WorkRoot();
+  const std::string work_root = common::ModuleRoot();
   const std::string current_path = common::GetCurrentPath();
   const std::string dag_root_path = common::GetAbsolutePath(work_root, "dag");
   std::vector<std::string> paths;
-  for (auto& dag_conf : args_.GetDAGConfList()) {
+  for (auto &dag_conf : args_.GetDAGConfList()) {
     std::string module_path = "";
     if (dag_conf == common::GetFileName(dag_conf)) {
       // case dag conf argument var is a filename
@@ -71,16 +71,16 @@ bool ModuleController::LoadAll() {
   return true;
 }
 
-bool ModuleController::LoadModule(const DagConfig& dag_config) {
-  const std::string work_root = common::WorkRoot();
+bool ModuleController::LoadModule(const DagConfig &dag_config) {
+  const std::string module_bin_root = common::ModuleBinRoot();
 
   for (auto module_config : dag_config.module_config()) {
     std::string load_path;
     if (module_config.module_library().front() == '/') {
       load_path = module_config.module_library();
     } else {
-      load_path =
-          common::GetAbsolutePath(work_root, module_config.module_library());
+      load_path = common::GetAbsolutePath(module_bin_root,
+                                          module_config.module_library());
     }
 
     if (!common::PathExists(load_path)) {
@@ -90,8 +90,8 @@ bool ModuleController::LoadModule(const DagConfig& dag_config) {
 
     class_loader_manager_.LoadLibrary(load_path);
 
-    for (auto& component : module_config.components()) {
-      const std::string& class_name = component.class_name();
+    for (auto &component : module_config.components()) {
+      const std::string &class_name = component.class_name();
       std::shared_ptr<ComponentBase> base =
           class_loader_manager_.CreateClassObj<ComponentBase>(class_name);
       if (base == nullptr || !base->Initialize(component.config())) {
@@ -100,8 +100,8 @@ bool ModuleController::LoadModule(const DagConfig& dag_config) {
       component_list_.emplace_back(std::move(base));
     }
 
-    for (auto& component : module_config.timer_components()) {
-      const std::string& class_name = component.class_name();
+    for (auto &component : module_config.timer_components()) {
+      const std::string &class_name = component.class_name();
       std::shared_ptr<ComponentBase> base =
           class_loader_manager_.CreateClassObj<ComponentBase>(class_name);
       if (base == nullptr || !base->Initialize(component.config())) {
@@ -113,7 +113,7 @@ bool ModuleController::LoadModule(const DagConfig& dag_config) {
   return true;
 }
 
-bool ModuleController::LoadModule(const std::string& path) {
+bool ModuleController::LoadModule(const std::string &path) {
   DagConfig dag_config;
   if (!common::GetProtoFromFile(path, &dag_config)) {
     AERROR << "Get proto failed, file: " << path;
@@ -122,7 +122,7 @@ bool ModuleController::LoadModule(const std::string& path) {
   return LoadModule(dag_config);
 }
 
-int ModuleController::GetComponentNum(const std::string& path) {
+int ModuleController::GetComponentNum(const std::string &path) {
   DagConfig dag_config;
   int component_nums = 0;
   if (common::GetProtoFromFile(path, &dag_config)) {
@@ -136,6 +136,6 @@ int ModuleController::GetComponentNum(const std::string& path) {
   return component_nums;
 }
 
-}  // namespace mainboard
-}  // namespace cyber
-}  // namespace apollo
+} // namespace mainboard
+} // namespace cyber
+} // namespace apollo

@@ -1,5 +1,5 @@
 load("@rules_python//python:defs.bzl", "py_binary")
-load("@//tools/install:install.bzl", "install_files")
+load("//tools/install:install.bzl", "install_files")
 
 package(
     default_visibility = ["//visibility:public"],

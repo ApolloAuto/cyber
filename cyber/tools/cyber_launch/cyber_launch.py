@@ -298,6 +298,7 @@ class ProcessMonitor(object):
         for p in self.procs:
             if p.is_alive():
                 logger.warning('Waiting for [%s][%s] exit.' % (p.name, p.pid))
+                os.kill(p.pid, signal.SIGTERM)
                 p.wait()
                 logger.info(
                     'Process [%s] has been stopped. dag_file: %s' % (p.name, p.dag_list))
