@@ -54,7 +54,7 @@ cc_library(
         "//cyber:state",
         "//cyber/base",
         "//cyber/blocker:blocker_manager",
-        "//cyber/class_loader",
+        "//cyber/class_loader:cyber_class_loader",
         "//cyber/class_loader:class_loader_manager",
         "//cyber/common",
         "//cyber/component",

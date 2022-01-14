@@ -4,7 +4,7 @@ load("//tools:cpplint.bzl", "cpplint")
 package(default_visibility = ["//visibility:public"])
 
 cc_library(
-    name = "class_loader",
+    name = "cyber_class_loader",
     srcs = ["class_loader.cc"],
     hdrs = ["class_loader.h"],
     deps = [
@@ -30,7 +30,7 @@ cc_library(
     srcs = ["class_loader_manager.cc"],
     hdrs = ["class_loader_manager.h"],
     deps = [
-        ":class_loader",
+        ":cyber_class_loader",
     ],
 )
 

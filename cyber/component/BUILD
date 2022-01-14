@@ -51,7 +51,7 @@ cc_library(
     deps = [
         "//cyber/base:signal",
         "//cyber/base:thread_pool",
-        "//cyber/class_loader",
+        "//cyber/class_loader:cyber_class_loader",
         "//cyber/node",
         "@com_github_gflags_gflags//:gflags",
     ],

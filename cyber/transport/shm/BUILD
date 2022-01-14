@@ -96,7 +96,7 @@ cc_library(
     deps = [
         ":block",
         ":shm_conf",
-        ":state",
+        ":shm_state",
         "//cyber/common:log",
         "//cyber/common:util",
     ],
@@ -125,7 +125,7 @@ cc_library(
 )
 
 cc_library(
-    name = "state",
+    name = "shm_state",
     srcs = ["state.cc"],
     hdrs = ["state.h"],
 )
